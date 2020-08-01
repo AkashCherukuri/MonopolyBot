@@ -7,6 +7,8 @@ from player import Player
 class Game:
     def __init__(self):
         self.state = None
+        self.num_houses = 32
+        self.num_hotels = 12
         self.players = []
         self.turn_cycler = None
         self.turn = None
@@ -32,7 +34,7 @@ class Game:
 
     #All game logic in here.
     def evaluate(self):
-        if self.state == State.GAME_LOBBY:
+        if self.state == State.GAME_BEGIN:
             while True:
                 num_players = int(prompt(f"Please enter the number of players."))
                 if num_players < 9 and num_players > 1:
@@ -45,9 +47,23 @@ class Game:
             self.turn_cycler = cycle(self.players)
             self.advance_turn()
 
-            self.state = State.GAME_BEGIN
+            self.state = State.GAME_CONT
             self.evaluate()
         
-        elif self.state == State.GAME_BEGIN:
-            pass
+        elif self.state == State.GAME_CONT:
+            print(f"--- {self.turn.alias}'s Turn --- \n")
+            _roll = roll()
+            #Need to add check for double rolls
+            print(f"{self.turn.alias} rolled a {_roll}! Advancing the player through {_roll} blocks...")
+            
+            (new_pos, bonus) = increment(self.turn.ret_pos(), _roll)
+            if bonus:
+                print(f"Adding 200$ for passing through GO...")
+                self.GO_Bonus(self.turn)
+            
+            self.turn.set_pos(new_pos)
+            id = self.board.board[new_pos].card["id"]
+            print(f"{self.turn.alias}, you've reached {id}!\n")
 
+            self.advance_turn()
+            self.evaluate()
