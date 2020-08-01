@@ -11,5 +11,10 @@ def prompt(str = ""):
     print()
     return inp
 
+#bool refers to whether we've passed through GO, to award money to player
 def increment(init_pos, roll):
-    return ((init_pos + roll) % 40)
+    new = init_pos + roll
+    if new > 39:
+        return ((new - 40), True)
+    else:
+        return (new, False)
