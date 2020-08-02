@@ -24,6 +24,13 @@ class Game:
         new.init(prompt(f"Enter alias for Player{len(self.players) + 1}"))
         self.players.append(new)
 
+    def is_prop(self, card):
+        colors = ["Brown", "Blue", "Pink", "Orange", "Red", "Yellow", "Green", "DBlue"]
+        if card["color"] in colors:
+            return True
+        else:
+            return False
+
     def check_owner(self, id):
         check = None
         for player in self.players:
@@ -80,8 +87,10 @@ class Game:
             #TODO: Maybe add a info() in player.py to print out details of the card...
             print(f"{self.turn.alias}, you've reached {id}!\n")
 
-            #If not owned, prompt to buy property
-            if self.check_owner(id) is None:
+            #TODO: Add Functionality for Chance, Community Chests and the like
+
+            #If not owned, prompt to buy property IF IT IS A PROPERTY
+            if self.check_owner(id) is None and self.is_prop(card):
                 cost = card["cost"]
                 resp = prompt(f"{id} is NOT owned by anyone yet. The cost to buy this property is {cost}. Do you want to but this property? (Y/N)")
                 if resp == 'y' or resp == 'Y':
@@ -93,7 +102,8 @@ class Game:
                     print(f"Property not bought.")
                 else:
                     print(f"Unknown response... Interpreting as disinterest in buying property.")
-            else:
+
+            elif self.check_owner(id) is not None and self.is_prop(card):
                 rent = card["rent"]
                 print(f"This property is owned by {self.check_owner(id).alias}. Paying a rent of {rent} to the owner...")
                 self.pay_rent(self.check_owner(id), rent)
@@ -110,3 +120,7 @@ class Game:
             self.advance_turn()
             self.state = State.TURN_BEGIN
             self.evaluate()
+
+new = Game()
+new.init()
+new.evaluate()
