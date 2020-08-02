@@ -3,7 +3,7 @@ class Player:
         self.pos = 0
         self.money = 0
         self.alias = None
-        self.owned_prop = []
+        self.owned_prop = [] #We add in the ids of owned cards
 
     def init(self, _alias):
         self.money = 1520 #Can be changed, but this is per the official rules.

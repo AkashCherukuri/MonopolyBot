@@ -16,13 +16,20 @@ class Game:
     def init(self):
         self.board = Board()
         self.board.init()
-        self.state = State.GAME_LOBBY
+        self.state = State.GAME_BEGIN
         print(f"Game of Monopoly has been initialized. Please follow the instructions on screen and enter your inputs accordingly.\n")
     
     def add_player(self):
         new = Player()
         new.init(prompt(f"Enter alias for Player{len(self.players) + 1}"))
         self.players.append(new)
+
+    def check_owner(self, id):
+        check = None
+        for player in self.players:
+            if id in player.owned_prop:
+                check = player
+        return check
 
     def advance_turn(self):
         self.turn = next(self.turn_cycler)
@@ -31,6 +38,11 @@ class Game:
     def GO_Bonus(self, player):
         player.pay(-200)
         return True
+    
+    #Current turn player pays rent to player in argument
+    def pay_rent(self, player, rent):
+        player.pay(-1 * rent)
+        self.turn.pay(rent)
 
     #All game logic in here.
     def evaluate(self):
@@ -47,10 +59,10 @@ class Game:
             self.turn_cycler = cycle(self.players)
             self.advance_turn()
 
-            self.state = State.GAME_CONT
+            self.state = State.TURN_BEGIN
             self.evaluate()
         
-        elif self.state == State.GAME_CONT:
+        elif self.state == State.TURN_BEGIN:
             print(f"--- {self.turn.alias}'s Turn --- \n")
             _roll = roll()
             #Need to add check for double rolls
@@ -62,8 +74,39 @@ class Game:
                 self.GO_Bonus(self.turn)
             
             self.turn.set_pos(new_pos)
-            id = self.board.board[new_pos].card["id"]
+            card = self.board.board[new_pos].card
+            id = card["id"]
+
+            #TODO: Maybe add a info() in player.py to print out details of the card...
             print(f"{self.turn.alias}, you've reached {id}!\n")
 
+            #If not owned, prompt to buy property
+            if self.check_owner(id) is None:
+                cost = card["cost"]
+                resp = prompt(f"{id} is NOT owned by anyone yet. The cost to buy this property is {cost}. Do you want to but this property? (Y/N)")
+                if resp == 'y' or resp == 'Y':
+                    self.turn.pay(cost)
+                    self.turn.owned_prop.append(id)
+                    print(f"{self.turn.alias} has bought {id} for {cost}. Remaining money is {self.turn.money}.")
+                #TODO: Make auctioning possible here
+                elif resp == 'n' or resp == 'N':
+                    print(f"Property not bought.")
+                else:
+                    print(f"Unknown response... Interpreting as disinterest in buying property.")
+            else:
+                rent = card["rent"]
+                print(f"This property is owned by {self.check_owner(id).alias}. Paying a rent of {rent} to the owner...")
+                self.pay_rent(self.check_owner(id), rent)
+                print(f"Remaining money is {self.turn.money}.")
+
+            print()
+
+            self.state = State.TURN_END
+            self.evaluate()
+
+        elif self.state == State.TURN_END:
+            #TODO: Has the global prompt to buy houses anywhere or smth
+            #TODO: Check for double throw, and repeat turn if that is the case
             self.advance_turn()
+            self.state = State.TURN_BEGIN
             self.evaluate()
