@@ -3,7 +3,8 @@ import info
 #Total 40 cards are present on the board.
 class Card:
     def __init__(self):
-        self.card = {"id": None, "color": None, "cost": None, "rent": None, "hsc": None, "h1r": None, "h2r": None, "h3r": None, "h4r": None, "htr": None, }
+        self.card = {"id": None, "color": None, "cost": None, "rent": None, "hsc": None, "h1r": None, "h2r": None, "h3r": None, "h4r": None, "htr": None, "num_hs": 0, "num_ht": 0}
+
 
 class Board:
     def __init__(self):
