@@ -8,3 +8,12 @@ h2r = [None, 30, None, 60, None, None, 90, None, 90, 100, None, 150, None, 150, 
 h3r = [None, 90, None, 180, None, None, 270, None, 270, 300, None, 450, None, 450, 500, None, 550, None, 550, 600, None, 700, None, 700, 750, None, 800, 800, None, 850, None, 900, 900, None, 1000, None, None, 1100, None, 1400]
 h4r = [None, 160, None, 320, None, None, 400, None, 400, 450, None, 625, None, 625, 700, None, 750, None, 750, 800, None, 875, None, 875, 925, None, 975, 975, None, 1025, None, 1100, 1100, None, 1200, None, None, 1300, None, 1700]
 htr = [None, 250, None, 450, None, None, 550, None, 550, 600, None, 750, None, 750, 900, None, 950, None, 950, 1000, None, 1050, None, 1050, 1100, None, 1150, 1150, None, 1200, None, 1275, 1275, None, 1400, None, None, 1500, None, 2000]
+
+#TODO: "Advance to ..." need a pass GO check
+#TODO: Condition for "Advance to Utility" chance card to throw dice again if utility is owned by a player.
+#TODO: "Advance to nearest Railroad" check for ownership and pay double the amount owed
+#TODO: Storing the get outta jail cards and being able to auction them off
+ChC_Desc = ["Advance to GO!", "Advance to Illinois Avenue!", "Advance to nearest Utility!", "Advance to nearest Railroad!", "Get out of Jail Free!", "Go back 3 Spaces.", "Go directly to JAIL!", "Make general repairs on all your property!", "Pay poor tax of $15!", "Take a trip to Reading Railroad!", "Take a walk on the Boardwalk!", "You have been elected Chairman of the Board!", "Your building and loan matures!", "You have won a crossword competition!"]
+
+#TODO: Functionality for all fee payments and stuff
+ComC_Desc = ["Advance to GO!", "Bank Error in your Favour!", "Doctor's Fees.", "Sale of Stocks!", "Get out of Jail Free", "Go to Jail.", "Grand Opera Night!", "Your Xman fund has Matured!", "Income Tax Refund!", "It's your Birtday!", "Your Life Insurance has Matured!", "Hospital's Fees.", "School Fees.", "Receive Consultancy Fees!", "You are assessed for Street Repairs.", "You have won second prize in a beauty contest!", "You've Inherited 100$!"]
