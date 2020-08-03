@@ -1,4 +1,5 @@
 import info
+import random
 
 #Total 40 cards are present on the board.
 class Card:
@@ -26,3 +27,19 @@ class Board:
             self.board[i].card["h3r"] = info.h3r[i]
             self.board[i].card["h4r"] = info.h4r[i]
             self.board[i].card["htr"] = info.htr[i]
+
+        self.ch_cards = info.ChC_Desc
+        self.com_cards = info.ComC_Desc
+
+        random.shuffle(self.ch_cards)
+        random.shuffle(self.com_cards)
+
+    #div is a bool; if True then chance is drawn, if False then Community chest is drawn; and drawn card is shifted to bottom of deck
+    def draw(self, div):
+        if div:
+            deck = self.ch_cards
+        else:
+            deck = self.com_cards
+        deck.append(deck[0])
+        deck.pop(0)
+        return deck[-1]
