@@ -87,8 +87,6 @@ class Game:
             #TODO: Maybe add a info() in player.py to print out details of the card...
             print(f"{self.turn.alias}, you've reached {id}!\n")
 
-            #TODO: Add Functionality for Chance, Community Chests and the like
-
             #If not owned, prompt to buy property IF IT IS A PROPERTY
             if self.check_owner(id) is None and self.is_prop(card):
                 cost = card["cost"]
@@ -109,6 +107,14 @@ class Game:
                 self.pay_rent(self.check_owner(id), rent)
                 print(f"Remaining money is {self.turn.money}.")
 
+            elif card["color"] == "CC" or card["color"] == "C":
+                #TODO: Add Functionality for Chance, Community Chests
+                div = True
+                if card["color"] == "CC":
+                    div = False
+                print(f"Drawing a card from the pile...")
+                print(f"{self.turn.alias} has drawn a card, and it says... {self.board.draw(div)}")
+                prompt(f"Do you agree?")
             print()
 
             self.state = State.TURN_END
