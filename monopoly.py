@@ -1,3 +1,9 @@
-from game import *
+from game.game import Game
 
-print("This is the main module to be run")
+def run():
+    new = Game()
+    new.init()
+    new.evaluate()
+
+if __name__ == "__main__":
+    run()

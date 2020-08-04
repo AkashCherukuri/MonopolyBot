@@ -1,4 +1,4 @@
-import info
+from .info import id, color, cost, rent, hsc, h1r, h2r, h3r, h4r, htr, ChC_Desc, ComC_Desc
 import random
 
 #Total 40 cards are present on the board.
@@ -12,24 +12,24 @@ class Board:
         self.board = []
 
     def init(self):
-        for _id in info.id:
+        for _id in id:
             _card = Card()
             _card.card["id"] = _id
             self.board.append(_card)
 
-        for i in range(len(info.id)):
-            self.board[i].card["color"] = info.color[i]
-            self.board[i].card["cost"] = info.cost[i]
-            self.board[i].card["rent"] = info.rent[i]
-            self.board[i].card["hsc"] = info.hsc[i]
-            self.board[i].card["h1r"] = info.h1r[i]
-            self.board[i].card["h2r"] = info.h2r[i]
-            self.board[i].card["h3r"] = info.h3r[i]
-            self.board[i].card["h4r"] = info.h4r[i]
-            self.board[i].card["htr"] = info.htr[i]
+        for i in range(len(id)):
+            self.board[i].card["color"] = color[i]
+            self.board[i].card["cost"] = cost[i]
+            self.board[i].card["rent"] = rent[i]
+            self.board[i].card["hsc"] = hsc[i]
+            self.board[i].card["h1r"] = h1r[i]
+            self.board[i].card["h2r"] = h2r[i]
+            self.board[i].card["h3r"] = h3r[i]
+            self.board[i].card["h4r"] = h4r[i]
+            self.board[i].card["htr"] = htr[i]
 
-        self.ch_cards = info.ChC_Desc
-        self.com_cards = info.ComC_Desc
+        self.ch_cards = ChC_Desc
+        self.com_cards = ComC_Desc
 
         random.shuffle(self.ch_cards)
         random.shuffle(self.com_cards)

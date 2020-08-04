@@ -1,8 +1,8 @@
 from itertools import cycle
-from board import Board
-from utils import *
-from const import State
-from player import Player
+from .board import Board
+from .utils import *
+from .const import State
+from .player import Player
 
 class Game:
     def __init__(self):
@@ -126,7 +126,3 @@ class Game:
             self.advance_turn()
             self.state = State.TURN_BEGIN
             self.evaluate()
-
-new = Game()
-new.init()
-new.evaluate()
