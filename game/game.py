@@ -7,8 +7,8 @@ from .player import Player
 class Game:
     def __init__(self):
         self.state = None
-        self.num_houses = 32
-        self.num_hotels = 12
+        self.bank_houses = 32
+        self.bank_hotels = 12
         self.players = []
         self.turn_cycler = None
         self.turn = None
@@ -45,6 +45,19 @@ class Game:
     def GO_Bonus(self, player):
         player.pay(-200)
         return True
+
+    #Check number of Houses and Hotels and return rent
+    def find_rent(self, card):
+        num_houses = card["num_hs"]
+        num_hotels = card["num_ht"]
+
+        if num_hotels != 0:
+            return (card["htr"])
+        elif num_houses == 0:
+            return (card["rent"])
+        else:
+            tag = "h" + str(num_houses) + "r"
+            return (card[tag])
     
     #Current turn player pays rent to player in argument
     def pay_rent(self, player, rent):
@@ -102,7 +115,7 @@ class Game:
                     print(f"Unknown response... Interpreting as disinterest in buying property.")
 
             elif self.check_owner(id) is not None and self.is_prop(card):
-                rent = card["rent"]
+                rent = self.find_rent(card)
                 print(f"This property is owned by {self.check_owner(id).alias}. Paying a rent of {rent} to the owner...")
                 self.pay_rent(self.check_owner(id), rent)
                 print(f"Remaining money is {self.turn.money}.")
