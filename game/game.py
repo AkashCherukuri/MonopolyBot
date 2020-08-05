@@ -59,6 +59,26 @@ class Game:
             tag = "h" + str(num_houses) + "r"
             return (card[tag])
     
+    #Returns True if property has been developed; and returns False if not possible to do so
+    def dev_prop(self, card):
+        if not self.bank_houses and card.card["num_hs"] < 4:
+            card.card["num_hs"] += 1
+            self.bank_houses = self.bank_houses - 1
+            return True
+        elif not self.bank_hotels and card.card["num_hs"] == 4:
+            card.card["num_hs"] = 0
+            self.bank_houses += 4
+            self.bank_hotels = self.bank_hotels - 1
+            card.card["num_ht"] = 1
+            return True
+        else:
+            return False
+
+    def find_card(self, id, board):
+        for card in board.board:
+            if card.card["id"] == id:
+                return card
+
     #Current turn player pays rent to player in argument
     def pay_rent(self, player, rent):
         player.pay(-1 * rent)
@@ -135,9 +155,10 @@ class Game:
 
         elif self.state == State.TURN_END:
             #TODO: Has the global prompt to buy houses anywhere or smth
+            #TODO: info() which prints the number of houses and hotels in the bank's stock
             print(f"{self.turn.alias}'s turn has ended. The bank has {self.bank_houses} houses in stock, and {self.bank_hotels} hotels in stock.")
             while True:
-                entry = prompt(f"Anyone willing to buy the properties, enter your alias below. Enter 'X' if no one is interested:")
+                entry = prompt(f"Anyone willing to buy houses or hotels for properties, enter your alias below. Enter 'X' if no one is interested:")
 
                 check = False
 
@@ -150,10 +171,20 @@ class Game:
                         check = True
                         if len(player.owned_prop) != 0:
                             print(f"{player.alias}, you own the following properties:")
-                            i = 0
+                            i = 1
                             for prop in player.owned_prop:
                                 print(f"{prop} ({i})")
                                 i+=1
+                            #TODO: Failsafe here if input is not integer
+                            inp = int(prompt(f"Please enter the id of the property you'd like to develop:"))
+                            prop_id = player.owned_prop[inp-1]
+                            prop_card = self.find_card(prop_id, self.board)
+                            self.dev_prop(prop_card)
+                            hs = prop_card.card["num_hs"]
+                            ht = prop_card.card["num_ht"]
+                            print(f"Property developed. This property now has {hs} houses, and {ht} hotels.")
+                        else:
+                            print(f"{player.alias}, you own no properties, meaning you can't buy any houses.")
 
                 if not check:
                     print(f"Alias not found, please try again.")
