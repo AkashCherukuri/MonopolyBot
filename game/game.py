@@ -61,11 +61,13 @@ class Game:
     
     #Returns True if property has been developed; and returns False if not possible to do so
     def dev_prop(self, card):
-        if not self.bank_houses and card.card["num_hs"] < 4:
+        if card.card["num_ht"] == 1:
+            return False
+        elif self.bank_houses != 0 and card.card["num_hs"] < 4:
             card.card["num_hs"] += 1
             self.bank_houses = self.bank_houses - 1
             return True
-        elif not self.bank_hotels and card.card["num_hs"] == 4:
+        elif self.bank_hotels != 0 and card.card["num_hs"] == 4:
             card.card["num_hs"] = 0
             self.bank_houses += 4
             self.bank_hotels = self.bank_hotels - 1
@@ -179,10 +181,12 @@ class Game:
                             inp = int(prompt(f"Please enter the id of the property you'd like to develop:"))
                             prop_id = player.owned_prop[inp-1]
                             prop_card = self.find_card(prop_id, self.board)
-                            self.dev_prop(prop_card)
-                            hs = prop_card.card["num_hs"]
-                            ht = prop_card.card["num_ht"]
-                            print(f"Property developed. This property now has {hs} houses, and {ht} hotels.")
+                            if self.dev_prop(prop_card):
+                                hs = prop_card.card["num_hs"]
+                                ht = prop_card.card["num_ht"]
+                                print(f"Property developed. This property now has {hs} houses, and {ht} hotels.")
+                            else:
+                                print(f"Property not Developed.")
                         else:
                             print(f"{player.alias}, you own no properties, meaning you can't buy any houses.")
 
