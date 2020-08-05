@@ -135,17 +135,28 @@ class Game:
 
         elif self.state == State.TURN_END:
             #TODO: Has the global prompt to buy houses anywhere or smth
-            print(f"{self.turn.alias}'s turn has ended. The bank has {self.bank_houses} houses in stock, and {self.bank_hotels} hotels in stock.") 
-            entry = prompt(f"Anyone willing to buy the properties, enter your alias below:")
+            print(f"{self.turn.alias}'s turn has ended. The bank has {self.bank_houses} houses in stock, and {self.bank_hotels} hotels in stock.")
+            while True:
+                entry = prompt(f"Anyone willing to buy the properties, enter your alias below. Enter 'X' if no one is interested:")
+
+                check = False
+
+                if entry == 'x' or check == 'X':
+                    print(f"Ending Bidding Stage...")
+                    break
             
-            for player in self.players:
-                if player.alias == entry:
-                    if len(player.owned_prop) != 0:
-                        print(f"{player.alias}, you own the following properties:")
-                        i = 0
-                        for prop in player.owned_prop:
-                            print(f"{prop} ({i})")
-                            i+=1
+                for player in self.players:
+                    if player.alias == entry:
+                        check = True
+                        if len(player.owned_prop) != 0:
+                            print(f"{player.alias}, you own the following properties:")
+                            i = 0
+                            for prop in player.owned_prop:
+                                print(f"{prop} ({i})")
+                                i+=1
+
+                if not check:
+                    print(f"Alias not found, please try again.")
 
 
             #TODO: Check for double throw, and repeat turn if that is the case
